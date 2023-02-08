@@ -21,7 +21,7 @@ const Ecommerce = () => {
               <p className='text-2xl'>$63,448</p>
             </div>
           </div>
-          <div className='mt-'>
+          <div className='mt-6'>
             <Button
               color="white"
               bgColor={currentColor}

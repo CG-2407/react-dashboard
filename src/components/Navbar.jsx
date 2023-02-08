@@ -1,4 +1,4 @@
-import React, {useEffect, useState } from 'react';
+import React, {useEffect } from 'react';
 import { AiOutlineMenu } from "react-icons/ai";
 import { FiShoppingCart } from "react-icons/fi";
 import { BsChatLeft } from "react-icons/bs";
@@ -26,32 +26,31 @@ const NavButton = ({ title, customFunc, icon, color, dotColor}) => (
 
 const Navbar = () => {
 
-  const { currentColor, activeMenu, setActiveMenu, isClicked, setIsClicked, handleClick, screenSize, setScreenSize } = useStateContext();
+  const { currentColor, activeMenu, setActiveMenu, isClicked, handleClick, screenSize, setScreenSize } = useStateContext();
   
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);
+
     window.addEventListener('resize', handleResize);
+
     handleResize();
 
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
-  
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   useEffect(() => {
-    if(screenSize <= 900) {
+    if (screenSize <= 900) {
       setActiveMenu(false);
-    }else{
+    } else {
       setActiveMenu(true);
     }
-  }, [screenSize])
+  }, [screenSize]);
+
+  const handleActiveMenu = () => setActiveMenu(!activeMenu);
   
   return (
-    <div className='flex justify-between p-2 md:mx-6 relative'>
-      <NavButton 
-        title="Menu" 
-        customFunc={() => setActiveMenu((prevActiveMenu) => !prevActiveMenu)} 
-        color={currentColor}
-        icon={<AiOutlineMenu/>}
-      />
+    <div className="flex justify-between p-2 md:ml-6 md:mr-6 relative">
+      <NavButton title="Menu" customFunc={handleActiveMenu} color={currentColor} icon={<AiOutlineMenu />} />
       <div className='flex'>
         <NavButton
           title="Cart"
@@ -68,7 +67,7 @@ const Navbar = () => {
         />
         <NavButton
           title="Notifications"
-          dotColor="#03C9D7"
+          dotColor="rgb(254, 201, 15)"
           customFunc={() => handleClick('notification')}
           color={currentColor}
           icon={<RiNotification3Line />}
@@ -81,8 +80,9 @@ const Navbar = () => {
             onClick={() => handleClick('userProfile')}
           >
             <img
+              className="rounded-full w-8 h-8"
               src={avatar}
-              className="rounded-full w-8  h-8"
+              alt="user-profile"
             />
             <p>
               <span className='text-gray-400 text-14'>Hi,</span>
@@ -91,10 +91,10 @@ const Navbar = () => {
             <MdKeyboardArrowDown className='text-gray-400 text-14' />
           </div>
         </TooltipComponent>
-        {isClicked.cart && <Cart/>}
-        {isClicked.chat && <Chat/>}
-        {isClicked.notification && <Notification/>}
-        {isClicked.UserProfile && <UserProfile/>}
+        {isClicked?.cart && (<Cart />)}
+        {isClicked?.chat && (<Chat />)}
+        {isClicked?.notification && (<Notification />)}
+        {isClicked?.userProfile && (<UserProfile />)}
       </div>
     </div>
   )
